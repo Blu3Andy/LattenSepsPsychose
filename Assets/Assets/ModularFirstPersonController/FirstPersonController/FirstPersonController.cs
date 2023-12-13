@@ -129,7 +129,13 @@ public class FirstPersonController : MonoBehaviour
     private Vector3 jointOriginalPos;
     private float timer = 0;
 
+    //Andys adds
+
+    Vector3 targetVelocity;
+
     #endregion
+
+
 
     private void Awake()
     {
@@ -219,10 +225,14 @@ public class FirstPersonController : MonoBehaviour
                 pitch += mouseSensitivity * Input.GetAxis("Mouse Y");
             }
 
+            
             // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
 
+           //Das steuert das links/rechts schauen
             transform.localEulerAngles = new Vector3(0, yaw, 0);
+
+            //Das steuert das hoch/runter schauen
             playerCamera.transform.localEulerAngles = new Vector3(pitch, 0, 0);
         }
 
@@ -371,7 +381,7 @@ public class FirstPersonController : MonoBehaviour
         if (playerCanMove)
         {
             // Calculate how fast we should be moving
-            Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
             // Checks if player is walking and isGrounded
             // Will allow head bob
@@ -384,7 +394,7 @@ public class FirstPersonController : MonoBehaviour
                 isWalking = false;
             }
 
-            // All movement calculations shile sprint is active
+            // All movement calculations while sprint is active
             if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
             {
                 targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
@@ -466,6 +476,17 @@ public class FirstPersonController : MonoBehaviour
         {
             rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
             isGrounded = false;
+
+            targetVelocity = transform.TransformDirection(targetVelocity) ;
+
+            // Apply a force that attempts to reach our target velocity
+            Vector3 velocity = rb.velocity;
+            Vector3 velocityChange = (targetVelocity - velocity);
+            velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+            velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+            velocityChange.y = 0;
+
+            rb.AddForce(velocityChange, ForceMode.VelocityChange);
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
