@@ -18,6 +18,21 @@ public class FirstPersonController : MonoBehaviour
 {
     private Rigidbody rb;
 
+    
+
+    #region Andy Adds
+
+    //Andys adds
+
+    Vector3 targetVelocity;
+
+    public bool bunnyHop = true;
+
+    public float bunnyRate = 1.0f;
+    
+
+    #endregion
+
     #region Camera Movement Variables
 
     public Camera playerCamera;
@@ -129,9 +144,7 @@ public class FirstPersonController : MonoBehaviour
     private Vector3 jointOriginalPos;
     private float timer = 0;
 
-    //Andys adds
-
-    Vector3 targetVelocity;
+    
 
     #endregion
 
@@ -477,16 +490,19 @@ public class FirstPersonController : MonoBehaviour
             rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
             isGrounded = false;
 
-            targetVelocity = transform.TransformDirection(targetVelocity) ;
+            if(bunnyHop)
+            {
+                targetVelocity = transform.TransformDirection(targetVelocity) * bunnyRate;
 
-            // Apply a force that attempts to reach our target velocity
-            Vector3 velocity = rb.velocity;
-            Vector3 velocityChange = (targetVelocity - velocity);
-            velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-            velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-            velocityChange.y = 0;
+                // Apply a force when hitting the jump button
+                Vector3 velocity = rb.velocity;
+                Vector3 velocityChange = (targetVelocity - velocity);
+                velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+                velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+                velocityChange.y = 0;
 
-            rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                rb.AddForce(velocityChange, ForceMode.VelocityChange);
+            }
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
@@ -574,6 +590,20 @@ public class FirstPersonController : MonoBehaviour
         GUILayout.Label("By Jess Case", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Normal, fontSize = 12 });
         GUILayout.Label("version 1.0.1", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Normal, fontSize = 12 });
         EditorGUILayout.Space();
+
+        #region Andy Adds
+
+        //Andys adds
+
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        GUILayout.Label("Andy Adds", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+        EditorGUILayout.Space();
+
+        fpc.bunnyHop = EditorGUILayout.ToggleLeft(new GUIContent("Enable Bunny Hop", "Unlocks the Bunnyhop feature andy added"), fpc.bunnyHop);
+
+        fpc.bunnyRate = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the player will move while walking."), fpc.bunnyRate, .1f, 10);
+
+        #endregion
 
         #region Camera Setup
 
