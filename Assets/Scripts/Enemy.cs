@@ -40,6 +40,6 @@ public class Enemy : MonoBehaviour
         //transform.LookAt(player);
       
         agent.SetDestination(player.position);
-        print("kek");
+        //print("kek");
     }
 }

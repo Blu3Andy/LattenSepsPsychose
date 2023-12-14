@@ -596,7 +596,7 @@ public class FirstPersonController : MonoBehaviour
         //Andys adds
 
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        GUILayout.Label("Andy Adds", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+        GUILayout.Label("Andy's Adds", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
         EditorGUILayout.Space();
 
         fpc.bunnyHop = EditorGUILayout.ToggleLeft(new GUIContent("Enable Bunny Hop", "Unlocks the Bunnyhop feature andy added"), fpc.bunnyHop);
