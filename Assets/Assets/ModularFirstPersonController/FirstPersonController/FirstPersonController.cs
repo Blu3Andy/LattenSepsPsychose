@@ -475,6 +475,8 @@ public class FirstPersonController : MonoBehaviour
         {
             Debug.DrawRay(origin, direction * distance, Color.red);
             isGrounded = true;
+
+            //print("is grounded");
         }
         else
         {
@@ -492,16 +494,16 @@ public class FirstPersonController : MonoBehaviour
 
             if(bunnyHop)
             {
-                targetVelocity = transform.TransformDirection(targetVelocity) * bunnyRate;
+                targetVelocity = transform.TransformDirection(targetVelocity) * 1000;
 
                 // Apply a force when hitting the jump button
                 Vector3 velocity = rb.velocity;
-                Vector3 velocityChange = (targetVelocity - velocity);
+                Vector3 velocityChange = (targetVelocity );
                 velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
                 velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
                 velocityChange.y = 0;
 
-                rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                rb.AddForce(velocityChange, ForceMode.Force);
             }
         }
 
@@ -601,7 +603,7 @@ public class FirstPersonController : MonoBehaviour
 
         fpc.bunnyHop = EditorGUILayout.ToggleLeft(new GUIContent("Enable Bunny Hop", "Unlocks the Bunnyhop feature andy added"), fpc.bunnyHop);
 
-        fpc.bunnyRate = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the player will move while walking."), fpc.bunnyRate, .1f, 10);
+        fpc.bunnyRate = EditorGUILayout.Slider(new GUIContent("Bunn Hop Strength", "Determines how fast the player will move while walking."), fpc.bunnyRate, .1f, 10);
 
         #endregion
 
