@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
 
     float distance;
+    public float health = 100;
     public float minDistance;
 
     public Transform player;
@@ -28,7 +29,10 @@ public class Enemy : MonoBehaviour
 
         ChasePlayer();
         
-        
+        if(health < 0)
+        {
+            Death();
+        }
 
         distance = Vector3.Distance(transform.position, player.transform.position);
 
@@ -41,5 +45,17 @@ public class Enemy : MonoBehaviour
       
         agent.SetDestination(player.position);
         //print("kek");
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        print("aua");
+    }
+
+    void Death()
+    {
+        Destroy(gameObject);
     }
 }
